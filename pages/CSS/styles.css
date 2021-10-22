@@ -2,3 +2,8 @@ body{
     background-color: black;
     color: white;
 }
+
+#switch-box{
+    width: 30%;
+    border: 1px black solid;
+}

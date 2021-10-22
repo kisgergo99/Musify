@@ -5,11 +5,11 @@
 
 <body>
     <h2>Welcome to MusiFy!</h2>
-    <div class="container text-white w-25">
+    <div class="card bg-dark w-25">
         <div class="row border justify-content-md-center rounded">
             <div class="col-md-auto">
-                <div id="loginForm">
-                    <form action="/musify/Controller/" method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
+                <div id="loginForm" class="form-group">
+                    <form method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
                         <div class="form-group">
                             <label for="username">E-mail address: </label>
                             <input type="text" name="username" id="username" class="form-control" placeholder="E-mail address" required>
@@ -18,8 +18,13 @@
                             <label for="passw">Password: </label>
                             <input type="password" name="passw" class="form-control" id="passw" placeholder="Password" required>
                         </div>
+                        <div class="form-group">
+                            <img src="captcha/captcha.php" alt="Biztonsági kód" title="Biztonsági kód" draggable="false">
+                            <input type="text" name="captcha_code" value="" maxlength="6" placeholder="Biztonsági kód" class="form-control" required>
+                            <small id="pswHelp" class="form-text text-muted">Biztonsági ellenőrzés: kérlek írd be a fent olvasható kódot!</small>
+                        </div>
                         <input type="submit" name="bejelentkezes" id="bejelentkezes" value="Login" class="btn btn-primary"/>
-                        </form>
+                    </form>
                 </div>
                 <div id="registerForm">
                     <form action="/musify/Controller/" method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
@@ -38,6 +43,10 @@
                         <div class="form-group">
                             <label for="passw">Choose password: </label>
                             <input type="password" name="passw" class="form-control" id="passw" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passw">Password again: </label>
+                            <input type="password" name="passw" class="form-control" id="passw" placeholder="Password again" required>
                         </div>
                         <input type="submit" name="regisztralas" id="regisztralas" value="Sign In" class="btn btn-primary"/>
                         </form>

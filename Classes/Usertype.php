@@ -13,7 +13,16 @@ class Usertype{
         $this->valid = false;
         $this->type = "GUEST";
         $this->username = "";
+        $this->database = new Database();
     }
+
+    public function checkCaptcha($userInput){
+		if($_SESSION["captcha_for_user"] == $userInput){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
     public function createLoginSession(string $username){
         $userdata = array();
@@ -39,6 +48,10 @@ class Usertype{
     public function dropSession(){
         unset($_SESSION['user']);
     }
+
+    public function getUserByEmail($email){
+		return $this->database->getUserCredentials($email);
+	}
 
 }
 

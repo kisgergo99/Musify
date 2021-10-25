@@ -19,3 +19,4 @@ Jelenleg a telepítővarázsló még folyamatban van, addig is a használathoz, 
 	    const USER = "MySQLusername"
 	    const PASS = "MySQLpassword"
 	    const DBNAME = "DatabaseName"
+    ?>

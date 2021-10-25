@@ -8,6 +8,7 @@ if($usertype->isLoggedIn()){
     redirect("/musify/pages/home/");
 }else{
     include(__DIR__."/../pages/landing/index.php");
+    
 }
 
 

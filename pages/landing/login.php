@@ -2,15 +2,15 @@
 
 $usertype = new Usertype();
 if($usertype->checkCaptcha(htmlspecialchars($_POST['captcha_code'], ENT_QUOTES, 'UTF-8'))){
-	if(isset($_POST['bejelentkezes']) && $_POST['username'] != NULL && $_POST['passw'] != NULL){
-		$passw = htmlspecialchars($_POST['passw'], ENT_QUOTES, 'UTF-8');
-		$user = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
+	if(isset($_POST['bejelentkezes']) && $_POST['user_email'] != NULL && $_POST['passw'] != NULL){
+		$passw = $_POST['passw'];
+		$user = htmlspecialchars($_POST['user_email'], ENT_QUOTES, 'UTF-8');
 		$captcha = htmlspecialchars($_POST['captcha_code'], ENT_QUOTES, 'UTF-8');
 	
 	
 		if($user != NULL && $passw != NULL &&
-		($user == $usertype->getUserByEmail($user)['email'] && 
-		(password_verify($passw, $usertype->getUserByEmail($user)['password']))) && $captcha == $_SESSION['captcha_for_user']){
+		($user == $usertype->getUserByEmail($user)['user_email'] && 
+		(password_verify($passw, $usertype->getUserByEmail($user)['user_password']))) && $captcha == $_SESSION['captcha_for_user']){
 			$usertype->createLoginSession($user, $captcha);
 			header('Location: '. "./index.php");
 			die();

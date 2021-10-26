@@ -25,7 +25,6 @@ class Usertype{
 	}
 
     public function createLoginSession(string $username){
-        $userdata = array();
         $_SESSION['user']['username'] = $username;
         $this->username = $username;
         $_SESSION['user']['type'] = 'user';
@@ -42,6 +41,18 @@ class Usertype{
     public function getUsername(){
         if(isset($_SESSION['user']) && isset($_SESSION['user']['username'])){
             return $_SESSION['user']['username'];
+        }
+    }
+
+    public function getLastname(){
+        if($this->isLoggedIn()){
+            if(!isset($_SESSION['user']['lastname'])){
+                $_SESSION['user']['lastname'] = $this->database->getLastname($_SESSION['user']['username']);
+                return $_SESSION['user']['lastname'];
+            }else{
+                return $_SESSION['user']['lastname'];
+            }
+            
         }
     }
 

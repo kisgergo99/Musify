@@ -26,8 +26,10 @@ switch($statuscode){
         $msg = array();
         foreach ($_GET as $key => $value) { 
             if($key == "email_wrong"){array_push($msg, "Wrong email address!<br>");}
+            if($key == "email_exists"){array_push($msg, "This email has been already registered. Is it you? Try to log in!<br>");}
             if($key == "password_not_match"){array_push($msg, "Password is not matching!<br>");}
             if($key == "not_accepted_terms"){array_push($msg, "Terms and conditions are not accepted!<br>");}
+            if($key == "captcha_fail"){array_push($msg, "Wrong security code given! (Captcha)<br>");}
         }
         echo "<div class='alert alert-danger' role='alert'>
         <center><b>Failed to sign you in: </b><br>";

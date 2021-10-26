@@ -4,49 +4,68 @@
 </head>
 
 <body>
-    <h2>Welcome to MusiFy!</h2>
-    <div class="card bg-dark w-25">
-        <div class="row border justify-content-md-center rounded">
-            <div class="col-md-auto">
+    <div class="row align-middle justify-content-center">
+        <div class="card bg-dark col-md-6 text-center rounded border">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link" id="loginButton" aria-current="true" href="#">Log In</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="registerButton" href="#">Create account</button>
+                </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">Welcome to MusiFy!</h2>
+                <p class="card-text">The platform where you find everything.</p>
                 <div id="loginForm" class="form-group">
                     <form method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
-                        <div class="form-group">
-                            <label for="username">E-mail address: </label>
+                        <div class="form-floating mb-3">
                             <input type="text" name="user_email" id="user_email" class="form-control" placeholder="E-mail address" required>
+                            <label for="user_email" class="text-black">E-mail address:</label>
                         </div>
-                        <div class="form-group">
-                            <label for="passw">Password: </label>
+                        <div class="form-floating mb-3">
                             <input type="password" name="passw" class="form-control" id="passw" placeholder="Password" required>
+                            <label for="passw" class="text-black">Password:</label>
                         </div>
-                        <div class="form-group">
-                            <img src="captcha/captcha.php" alt="Biztonsági kód" title="Biztonsági kód" draggable="false">
-                            <input type="text" name="captcha_code" value="" maxlength="6" placeholder="Biztonsági kód" class="form-control" required>
-                            <small id="pswHelp" class="form-text text-muted">Biztonsági ellenőrzés: kérlek írd be a fent olvasható kódot!</small>
-                        </div>
+                        
                         <input type="submit" name="bejelentkezes" id="bejelentkezes" value="Login" class="btn btn-primary"/>
+                        <hr>
+                        <small>Forgotten your password?</small>
+                        <a href="#">Reset password</a><br>
                     </form>
                 </div>
                 <div id="registerForm">
                     <form method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
-                        <div class="form-group">
-                            <label for="username">E-mail address: </label>
+                        <div class="form-floating mb-3">
                             <input type="text" name="user_email" id="user_email" class="form-control" placeholder="E-mail address" required>
+                            <label for="username" class="text-black">E-mail address: </label>
                         </div>
-                        <div class="form-group">
-                            <label for="username">First name: </label>
+                        <div class="form-floating mb-3">
+                            
                             <input type="text" name="firstname" id="firstname" class="form-control" placeholder="First name" required>
+                            <label for="username" class="text-black">First name: </label>
                         </div>
-                        <div class="form-group">
-                            <label for="username">Last name: </label>
+                        <div class="form-floating mb-3">
+                            
                             <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last name" required>
+                            <label for="username" class="text-black">Last name: </label>
                         </div>
-                        <div class="form-group">
-                            <label for="passw">Choose password: </label>
+                        <div class="form-floating mb-3">
+                            
                             <input type="password" name="passw" class="form-control" id="passw" placeholder="Password" required>
+                            <label for="passw" class="text-black">Choose password: </label>
                         </div>
-                        <div class="form-group">
-                            <label for="passw">Password again: </label>
+                        <div class="form-floating mb-3">
+                            
                             <input type="password" name="passw_again" class="form-control" id="passw_again" placeholder="Password again" required>
+                            <label for="passw" class="text-black">Password again: </label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <img src="captcha/captcha.php" alt="Biztonsági kód" title="Biztonsági kód" draggable="false">
+                            <input type="text" name="captcha_code" value="" maxlength="6" placeholder="Biztonsági kód" class="form-control" required>
+                            
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="subscriptionDemo" name="subscriptionDemo">
@@ -61,10 +80,6 @@
                         </form>
                 </div>
             </div>
-        </div>
-        <div class="row border justify-content-md-center rounded">
-            <button id="loginButton">Log In</button>
-            <button id="registerButton">Register</button>
         </div>
     </div>
 </body>

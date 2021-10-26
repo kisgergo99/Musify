@@ -19,6 +19,7 @@
             <div class="card-body">
                 <h2 class="card-title">Welcome to MusiFy!</h2>
                 <p class="card-text">The platform where you find everything.</p>
+                <hr>
                 <div id="loginForm" class="form-group">
                     <form method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
                         <div class="form-floating mb-3">
@@ -40,33 +41,36 @@
                     <form method="post" enctype='application/x-www-form-urlencoded' class="form-inline">
                         <div class="form-floating mb-3">
                             <input type="text" name="user_email" id="user_email" class="form-control" placeholder="E-mail address" required>
-                            <label for="username" class="text-black">E-mail address: </label>
+                            <label for="username" class="text-black">E-mail address </label>
                         </div>
                         <div class="form-floating mb-3">
                             
                             <input type="text" name="firstname" id="firstname" class="form-control" placeholder="First name" required>
-                            <label for="username" class="text-black">First name: </label>
+                            <label for="username" class="text-black">First name </label>
                         </div>
                         <div class="form-floating mb-3">
                             
                             <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last name" required>
-                            <label for="username" class="text-black">Last name: </label>
+                            <label for="username" class="text-black">Last name </label>
                         </div>
+                        
                         <div class="form-floating mb-3">
                             
                             <input type="password" name="passw" class="form-control" id="passw" placeholder="Password" required>
-                            <label for="passw" class="text-black">Choose password: </label>
+                            <label for="passw" class="text-black">Choose password </label>
                         </div>
+                        
                         <div class="form-floating mb-3">
                             
                             <input type="password" name="passw_again" class="form-control" id="passw_again" placeholder="Password again" required>
-                            <label for="passw" class="text-black">Password again: </label>
+                            <label for="passw" class="text-black">Password again </label>
                         </div>
                         <div class="form-group mb-3">
                             <img src="captcha/captcha.php" alt="Biztonsági kód" title="Biztonsági kód" draggable="false">
-                            <input type="text" name="captcha_code" value="" maxlength="6" placeholder="Biztonsági kód" class="form-control" required>
+                            <input type="text" name="captcha_code" value="" maxlength="6" placeholder="Captcha" class="form-control" required>
                             
                         </div>
+                        <hr>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="subscriptionDemo" name="subscriptionDemo">
                             <label class="form-check-label" for="subscriptionDemo">I want 1 month free subscriptions!</label>
@@ -75,7 +79,7 @@
                             <input type="checkbox" class="form-check-input" id="termsandcond" name="termsandcond" required>
                             <label class="form-check-label" for="termsandcond">I agree the terms and conditions.</label>
                         </div>
-
+                        <hr>
                         <input type="submit" name="register" id="register" value="Sign In" class="btn btn-primary"/>
                         </form>
                 </div>

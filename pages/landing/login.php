@@ -11,6 +11,11 @@ if(isset($_POST['bejelentkezes']) && $usertype->checkCaptcha(htmlspecialchars($_
 		if($user != NULL && $passw != NULL &&
 		($user == $usertype->getUserByEmail($user)['user_email'] && 
 		(password_verify($passw, $usertype->getUserByEmail($user)['user_password']))) && $captcha == $_SESSION['captcha_for_user']){
+			
+			
+			//Itt legyen egy függvény, ami ellenőrzi az adatbázisban, hogy megerősítette-e az email verificationt!
+			
+			
 			$usertype->createLoginSession($usertype->getUserByEmail($user)['username'], $captcha);
 			header('Location: '. "./index.php");
 			die();

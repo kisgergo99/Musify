@@ -1,7 +1,8 @@
 <?php
 $usertype = new Usertype();
 ?>
-    
+
+<body onload="showMenu('menu_browse')">
 <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="#">SZE-Musify</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#myNavLol" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,13 +11,13 @@ $usertype = new Usertype();
   <div class="collapse navbar-collapse navbarNav" id="myNavLol">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+        <a class="nav-link" href="javascript:void(0);" id="menu_browse" onclick="showMenu(this.id)"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-align-justify" aria-hidden="true"></i> Albums</a>
+        <a class="nav-link" href="javascript:void(0);" id="menu_albums" onclick="showMenu(this.id)"><i class="fa fa-align-justify" aria-hidden="true"></i> Albums</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i> Search</a>
+        <a class="nav-link" href="javascript:void(0);" id="menu_search" onclick="showMenu(this.id)"><i class="fa fa-search" aria-hidden="true"></i> Search</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,4 +36,10 @@ $usertype = new Usertype();
     
   </div>
 </nav>
+
+<div class="framepage" id="framepage">
+
+</div>
+
+</body>
     

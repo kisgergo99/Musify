@@ -7,7 +7,6 @@ $(document).ready(function(){
       data: $(this).serialize(),
       success: function(response2)
       {
-        console.log(response2);
           $("#framepage").html(response2);
       }
     });
@@ -22,7 +21,6 @@ $(document).on('click','.singleMusicMenu',function() {
       data: $(this).serialize(),
       success: function(response1)
       {
-          console.log(response1);
           var data = JSON.parse(response1);
           $(".music-artwork").attr("src", data.music_artwork_path);
           $(".music-artist-name").text(data.music_artist_name);

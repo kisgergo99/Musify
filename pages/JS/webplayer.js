@@ -97,10 +97,14 @@ const setSliderMax = () => {
 }
 
 
+
 var framepage = document.getElementById('framepage');
 $('html').on('DOMSubtreeModified', '#framepage', function(){
     const audiolist = document.getElementById('list');
     const sourceControl = document.getElementById('sourceControl');
+    var singleMusicMenu = document.getElementsByClassName("singleMusicMenu");
+
+    
 
     if(audiolist && sourceControl){
         audiolist.onclick = function(e){
@@ -111,14 +115,16 @@ $('html').on('DOMSubtreeModified', '#framepage', function(){
             
             audio.load();
             audio.addEventListener("loadeddata", function () {
-                const bufferedAmount = audio.buffered.end(audio.buffered.length - 1);
-                const seekableAmount = audio.seekable.end(audio.seekable.length - 1);
+                const bufferedAmount = audio.buffered.end(this.buffered.length - 1);
+                const seekableAmount = audio.seekable.end(this.seekable.length - 1);
     
+                
                 const displayBufferedAmount = () => {
-                    const bufferedAmount = Math.floor(audio.buffered.end(audio.buffered.length - 1));
-                    audioPlayerContainer.style.setProperty('--buffered-width', `${(bufferedAmount / seekSlider.max) * 100}%`);
+                    if(audio.buffered.length>0){
+                        const bufferedAmount = Math.floor(this.buffered.end(0));
+                        audioPlayerContainer.style.setProperty('--buffered-width', `${(bufferedAmount / seekSlider.max) * 100}%`);
+                    }
                 }
-            
                 if (audio.readyState > 0) {
                     displayDuration();
                     setSliderMax();
@@ -131,13 +137,14 @@ $('html').on('DOMSubtreeModified', '#framepage', function(){
                         displayBufferedAmount();
                     });
                 }
-            
+
                 audio.play();
                 animation.playSegments([14, 27], true);
                 requestAnimationFrame(whilePlaying);
                 state = 'pause';
                 audio.addEventListener('progress', displayBufferedAmount);
             });
+            
         }
     }
     

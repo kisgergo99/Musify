@@ -1,5 +1,6 @@
 <?php
 $usertype = new Usertype();
+
 ?>
 <body class="mainscreenframe">
 <nav class="p-3 navbar sticky-top navbar-expand-md navbar-dark bg-dark">
@@ -44,6 +45,13 @@ $usertype = new Usertype();
     </audio>
     <table class="webplayer-table">
         <tr>
+          <td rowspan="2" class="webplayer-metadata-display">
+            <img src="/musify/images/defaultart.png" class="music-artwork" />
+            <div class="webplayer-metadata-text">
+              <h3 class="music-artist-name">No music loaded</h3>
+              <h6 class="music-track-name">No music loaded</h6>
+            </div>
+          </td>
           <td>
             <div style="margin-left: 23%; margin-top: 20px;">
               <button id="playpause" class="playerbutton"></button>

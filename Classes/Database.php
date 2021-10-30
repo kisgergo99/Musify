@@ -98,6 +98,51 @@ class Database{
         $stmt->close();
     }
 
+    public function getMusicList(){
+        $stmt = $this->mysqli->prepare("SELECT music_id, music_artist_name, music_track_name, music_path, music_artwork_path FROM music WHERE music_status=1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray[$row['music_id']] = array(
+                    "music_id" => $this->filter($row['music_id']),
+                    "music_artist_name" => $this->filter($row['music_artist_name']),
+                    "music_track_name" => $this->filter($row['music_track_name']),
+                    "music_path" => $this->filter($row['music_path']),
+                    "music_artwork_path" => $this->filter($row['music_artwork_path']),
+                );
+            }
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+        }else{
+            return $returnArray = array();
+        };
+    }
+
+    public function searchMusic($musicid, $musicpath){
+        $stmt = $this->mysqli->prepare("SELECT music_id, music_artist_name, music_track_name, music_artwork_path FROM music WHERE music_id=? AND music_path=?");
+        $stmt->bind_param("is", $musicid, $musicpath);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0 && $row['music_id'] == $musicid){
+               return $returnArray = array(
+                "music_artist_name" => $this->filter($row['music_artist_name']),
+                "music_track_name" => $this->filter($row['music_track_name']),
+                "music_artwork_path" => $this->filter($row['music_artwork_path']),
+               );
+            }else{
+                return $returnArray = array(
+                    "music_artist_name" => $this->filter("XD"),
+                    "music_track_name" => $this->filter("XD"),
+                    "music_artwork_path" => $this->filter("XD"),
+                   );
+            }
+        }
+    }
+
     public function closeConn(){
         $this->mysqli->close();
     }

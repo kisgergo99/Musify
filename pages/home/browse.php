@@ -1,12 +1,18 @@
 <?php
+$music = new Music();
+getAllMusicInLink($music);
 
-    echo "This is browse";
+
+function getAllMusicInLink($music){
+    $musiclist = $music->getMusicList();
+    echo '<ul id="list">';
+    foreach($musiclist as $m){
+        echo "<li><a href='#' class='singleMusicMenu' data-value='".$m['music_path']."' music-id='".$m['music_id']."'>".$m['music_artist_name']." - ".$m['music_track_name']."</a></li>";
+    }
+    echo "</ul>";
+}
 
 ?>
 
-<ul id="list">
-    <li><a href="#" data-value="/musify/audio/johnny.mp3">Johnny.mp3</a></li>
-    <li><a href="#" data-value="/musify/audio/drift.mp3">Drift.mp3</a></li>
-</ul>
 
 

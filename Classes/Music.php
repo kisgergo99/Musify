@@ -34,22 +34,21 @@ class Music{
         }else{
             $page = $count/5;
         }
-        for($a=0; $a<=$page; $a++){
+        $seged = 0;
+        for($a=1; $a<=$page; $a++){
             echo '<div class="card-group text-black">';
-            for($i=0; $i<$count; $i++){
-                foreach($latestAlbums as $a){
-                    echo '<div class="card border-danger album-item" album-id="'.$a["album_id"].'" style="max-width:20%">
-                                <img class="card-img-top" style="" src="'.$a["album_artwork_path"].'" alt="Card image cap">
+            for($i=$seged; $i<=min($a*5, $count)-1; $i++){
+                echo '<div class="card album-item" album-id="'.$latestAlbums[$i]["album_id"].'" style="max-width:20%">
+                                <img class="card-img-top" style="" src="'.$latestAlbums[$i]["album_artwork_path"].'" alt="Card image cap">
                                 <div class="card-body">
-                                <h5 class="card-title">'.$a["album_name"].'</h5>
-                                <p class="card-text">'.$a["album_artist_name"].'</p>
+                                <h5 class="card-title">'.$latestAlbums[$i]["album_name"].'</h5>
+                                <p class="card-text">'.$latestAlbums[$i]["album_artist_name"].'</p>
                                 </div>
                                 <div class="card-footer">
-                                <small class="text-muted">'.$a["album_release_date"].'</small>
+                                <small class="text-muted">'.$latestAlbums[$i]["album_release_date"].'</small>
                                 </div>
-                            </div>
-                            ';
-                }
+                            </div>';
+                $seged++;
             }
             echo '</div>';
         }

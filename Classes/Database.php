@@ -158,9 +158,10 @@ class Database{
         $stmt = $this->mysqli->prepare("SELECT * FROM albums ORDER BY album_release_date DESC LIMIT $limit");
         $stmt->execute();
         $result = $stmt->get_result();
+        $i=0;
         while($row = mysqli_fetch_array($result)){
             if($result->num_rows > 0){
-                $returnArray[$row['album_id']] = array(
+                $returnArray[$i] = array(
                     "album_id" => $this->filter($row['album_id']),
                     "album_artist_name" => $this->filter($row['album_artist_name']),
                     "album_name" => $this->filter($row['album_name']),
@@ -169,6 +170,7 @@ class Database{
                     "album_distributed_by" => $this->filter($row['album_distributed_by']),
                 );
             }
+            $i++;
         }
 
         if(isset($returnArray)){

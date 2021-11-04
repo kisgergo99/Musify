@@ -30,3 +30,16 @@ $(document).on('click','.singleMusicMenu',function() {
   });
 });
 
+$(document).on('click','.album-item',function() {
+  $.ajax({
+    type: "GET",
+    async: false,
+    url: '/musify/pages/home/albums.php?albumPage='+$(this).attr("album-id"),
+    data: $(this).serialize(),
+    success: function(response3)
+    {
+      $("#framepage").html(response3);
+        
+    }
+});
+});

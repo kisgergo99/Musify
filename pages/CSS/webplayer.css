@@ -22,10 +22,24 @@
     margin: 10px;
     display: inline-block;
 }
+
+
 /*MOBILE DEVICE -- MAJD ÁLLÍTANI KELL A WEBPLAYER-CONTAINER MAGASSÁGÁN (@media)*/
 
 
+.album-item{
+    cursor: pointer;
+    -webkit-filter: brightness(100%);
+}
 
+.album-item:hover{
+    -webkit-filter: brightness(70%);
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
 
 .playerbutton {
     padding: 0;

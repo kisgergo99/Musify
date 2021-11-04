@@ -1,13 +1,13 @@
 .webplayer-table{
     width: 100%;
     margin: 0 auto;
-    border: 1px black solid;
+    /*border: 1px black solid;*/
 }
 
 .webplayer-metadata-display{
-    border: 1px black solid;
-    width: 40%;
-    max-width: 20%;
+    /*border: 1px black solid;*/
+    width: 60%;
+    max-width: 30%;
 }
 
 .music-artwork{
@@ -46,6 +46,8 @@
     height: 130px;
     /*padding-left: 15%;*/
     border-top: 1px white solid;
+    display: flex;
+    z-index: 1000;
 }
 
 #webplayer-container::before {

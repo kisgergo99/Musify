@@ -17,14 +17,13 @@ $usertype = new Usertype();
         <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_albums"><i class="fa fa-align-justify" aria-hidden="true"></i> Albums</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_search" onclick="showMenu(this.id)"><i class="fa fa-search" aria-hidden="true"></i> Search</a>
+        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_search" ><i class="fa fa-search" aria-hidden="true"></i> Search</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user" aria-hidden="true"></i> <b> <?php echo($usertype->getLastname()); ?> </b>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#"><i class="fa fa-star" aria-hidden="true"></i> My Profile</a>
           <a class="dropdown-item" href="#"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
           <a class="dropdown-item bg-primary text-white" href="#"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>
           <form action="logout.php" method="POST" enctype='application/x-www-form-urlencoded'>
@@ -37,8 +36,10 @@ $usertype = new Usertype();
   </div>
 </nav>
 
-<div class="framepage" id="framepage"></div>
+<div class="framepage" id="framepage" style="padding-bottom: 120px;"></div>
 <link rel="stylesheet" href="/musify/pages/CSS/webplayer.css">
+
+<footer>
 <div class="webplayer-container" id="webplayer-container" style="color:black;">
     <audio preload="metadata">
         <source src="" preload="metadata" type="audio/mp3" id="sourceControl">

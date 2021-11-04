@@ -22,6 +22,10 @@ class Database{
         }
     }
 
+
+
+    /* -- USER -- */
+
     public function getUserCredentials($email){
         $stmt = $this->mysqli->prepare("SELECT user_id, username, user_email, user_password, user_type FROM users WHERE user_email=?");
         $stmt->bind_param("s", $email);
@@ -98,6 +102,13 @@ class Database{
         $stmt->close();
     }
 
+
+
+
+
+
+    /* -- MUSIC -- */
+
     public function getMusicList(){
         $stmt = $this->mysqli->prepare("SELECT music_id, music_artist_name, music_track_name, music_path, music_artwork_path FROM music WHERE music_status=1");
         $stmt->execute();
@@ -143,50 +154,79 @@ class Database{
         }
     }
 
+    public function getLatestAlbums($limit){
+        $stmt = $this->mysqli->prepare("SELECT * FROM albums ORDER BY album_release_date DESC LIMIT $limit");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray[$row['album_id']] = array(
+                    "album_id" => $this->filter($row['album_id']),
+                    "album_artist_name" => $this->filter($row['album_artist_name']),
+                    "album_name" => $this->filter($row['album_name']),
+                    "album_artwork_path" => $this->filter($row['album_artwork_path']),
+                    "album_release_date" => $this->filter($row['album_release_date']),
+                    "album_distributed_by" => $this->filter($row['album_distributed_by']),
+                );
+            }
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+        }else{
+            return $returnArray = array();
+        };
+    }
+
+
+
+
+    /* -- OTHERS -- */
+
     public function closeConn(){
         $this->mysqli->close();
     }
 
     private function generateUsername($firstname, $lastname){
-    $userNamesList = array();
-    $firstChar = str_split($firstname, 1)[0];
-    $firstTwoChar = str_split($firstname, 2)[0];
-    $numSufix = explode('-', date('Y-m-d-H')); 
+        $userNamesList = array();
+        $firstChar = str_split($firstname, 1)[0];
+        $firstTwoChar = str_split($firstname, 2)[0];
+        $numSufix = explode('-', date('Y-m-d-H')); 
 
-    array_push($userNamesList, 
-        $firstname, 
-        $lastname,        
-        $firstname.$lastname,      
-        $firstname.'.'.$lastname,  
-        $firstname.'-'.$lastname,  
-        $firstChar.$lastname,      
-        $firstTwoChar.$lastname, 
-        $firstname.$numSufix[0], 
-        $firstname.$numSufix[1],   
-        $firstname.$numSufix[2],   
-        $firstname.$numSufix[3]     
-    );
+        array_push($userNamesList, 
+            $firstname, 
+            $lastname,        
+            $firstname.$lastname,      
+            $firstname.'.'.$lastname,  
+            $firstname.'-'.$lastname,  
+            $firstChar.$lastname,      
+            $firstTwoChar.$lastname, 
+            $firstname.$numSufix[0], 
+            $firstname.$numSufix[1],   
+            $firstname.$numSufix[2],   
+            $firstname.$numSufix[3]     
+        );
 
 
-    $isAvailable = false; 
-    $index = 0;
-    $maxIndex = count($userNamesList) - 1;
+        $isAvailable = false; 
+        $index = 0;
+        $maxIndex = count($userNamesList) - 1;
 
-    do {
-        $availableUserName = $userNamesList[$index];
-        $isAvailable = $this->isAvailable($availableUserName);
-        $limit =  $index >= $maxIndex;
-        $index += 1;
-        if($limit){
-            break;
+        do {
+            $availableUserName = $userNamesList[$index];
+            $isAvailable = $this->isAvailable($availableUserName);
+            $limit =  $index >= $maxIndex;
+            $index += 1;
+            if($limit){
+                break;
+            }
+        } while (!$isAvailable );
+
+        if(!$isAvailable){
+            return $firstname.rand();
         }
-    } while (!$isAvailable );
-
-    if(!$isAvailable){
-        return $firstname.rand();
+        return $availableUserName;
     }
-    return $availableUserName;
-}
 
     private function isAvailable($userName){
         $result = $this->mysqli->query("SELECT user_id FROM users WHERE username='$userName'") or die($this->mysqli->error());

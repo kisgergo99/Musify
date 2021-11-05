@@ -181,7 +181,7 @@ class Database{
     }
 
     public function getAlbumInfo($albumId){
-        $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=?");
+        $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=? AND music_status=1");
         $id = $albumId;
         $stmt->bind_param("ii", $id, $id);
         $stmt->execute();

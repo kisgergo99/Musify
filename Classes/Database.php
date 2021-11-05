@@ -180,6 +180,39 @@ class Database{
         };
     }
 
+    public function getAlbumInfo($albumId){
+        $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=?");
+        $id = $albumId;
+        $stmt->bind_param("ii", $id, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $i = 0;
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray[$i] = array(
+                    "album_id" => $this->filter($row['album_id']),
+                    "album_artist_name" => $this->filter($row['album_artist_name']),
+                    "album_name" => $this->filter($row['album_name']),
+                    "album_artwork_path" => $this->filter($row['album_artwork_path']),
+                    "album_release_date" => $this->filter($row['album_release_date']),
+                    "album_distributed_by" => $this->filter($row['album_distributed_by']),
+                    "music_id" => $this->filter($row['music_id']),
+                    "music_artist_name" => $this->filter($row['music_artist_name']),
+                    "music_track_name" => $this->filter($row['music_track_name']),
+                    "music_path" => $this->filter($row['music_path']),
+                    "music_artwork_path" => $this->filter($row['music_artwork_path']),
+                );
+                $i++;
+            }
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+        }else{
+            return $returnArray = array();
+        };
+    }
+
 
 
 

@@ -41,6 +41,20 @@
     transition: all 0.3s ease;
 }
 
+.album-displaycontainer{
+    overflow: hidden;
+    
+}
+
+.album-artwork{
+    display: inline-block;
+}
+
+.album-description{
+    display: inline-block;
+    
+}
+
 .playerbutton {
     padding: 0;
     border: 0;

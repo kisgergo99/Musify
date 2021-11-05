@@ -9,15 +9,15 @@ $music = new Music();
 if(!isset($_REQUEST['albumPage'])){
     listRecentAlbums($music);
 }else{
-    getAlbumPage($_REQUEST['albumPage']);
+    getAlbumPage($_REQUEST['albumPage'], $music);
 }
 
 function listRecentAlbums($music){
     $music->getLatestAlbums(10);
 }
 
-function getAlbumPage($albumId){
-    echo "Selected album ID: ".$albumId;
+function getAlbumPage($albumId, $music){
+    $music->getTracksFromAlbum($albumId);
 }
 
 ?>

@@ -11,7 +11,12 @@ class Music{
 
     public function getMusicList(){
         $musiclist = $this->database->getMusicList();
-        echo '<h3 class="text-center">Latest uploaded</h3><hr>
+        echo '<h3 class="text-center">Latest uploaded</h3><hr>';
+        $this->echoMusic($musiclist);
+    }
+
+    private function echoMusic($musiclist){
+        echo '
         <div class="list-group">
         <ul id="list" style="list-style:none; width:75%; margin: auto;">';
         foreach($musiclist as $m){
@@ -51,6 +56,28 @@ class Music{
                 $seged++;
             }
             echo '</div>';
+        }
+    }
+
+    public function getTracksFromAlbum($albumId){
+        $albumArray = $this->database->getAlbumInfo($albumId);
+        if(!empty($albumArray)){
+            echo '
+            <table class="album-displaycontainer">
+                <tr>
+                    <th><img class="w-75" src="'.$albumArray[0]['album_artwork_path'].'" /></th>
+                    <th>
+                        <h1>'.$albumArray[0]['album_name'].'</h1>
+                        <hr>
+                        <h3>'.$albumArray[0]['album_artist_name'].'</h3>
+                        <p>'.$albumArray[0]['album_release_date'].'</p>
+                    </th>
+                </tr> 
+            </table>
+            <hr>
+            ';
+            $this->echoMusic($albumArray);
+            echo '<hr><small class="center">'.$albumArray[0]['album_distributed_by'].'</small>';
         }
     }
 }

@@ -27,13 +27,8 @@ class Music{
         echo "</ul></div> ";
     }
 
-    public function searchMusic($musicid, $musicpath){
-        return $this->database->searchMusic($musicid, $musicpath);
-    }
-
-    public function getLatestAlbums($limit){
-        $latestAlbums = $this->database->getLatestAlbums($limit);
-        $count = count($latestAlbums);
+    private function echoAlbums($array){
+        $count = count($array);
         if($count % 5 != 0){
             $page = floor($count/5)+1;
         }else{
@@ -43,20 +38,47 @@ class Music{
         for($a=1; $a<=$page; $a++){
             echo '<div class="card-group text-black">';
             for($i=$seged; $i<=min($a*5, $count)-1; $i++){
-                echo '<div class="card album-item" album-id="'.$latestAlbums[$i]["album_id"].'" style="max-width:20%">
-                                <img class="card-img-top" style="" src="'.$latestAlbums[$i]["album_artwork_path"].'" alt="Card image cap">
+                echo '<div class="card album-item" album-id="'.$array[$i]["album_id"].'" style="max-width:20%">
+                                <img class="card-img-top" style="" src="'.$array[$i]["album_artwork_path"].'" alt="Card image cap">
                                 <div class="card-body">
-                                <h5 class="card-title">'.$latestAlbums[$i]["album_name"].'</h5>
-                                <p class="card-text">'.$latestAlbums[$i]["album_artist_name"].'</p>
+                                <h5 class="card-title">'.$array[$i]["album_name"].'</h5>
+                                <p class="card-text">'.$array[$i]["album_artist_name"].'</p>
                                 </div>
                                 <div class="card-footer">
-                                <small class="text-muted">'.$latestAlbums[$i]["album_release_date"].'</small>
+                                <small class="text-muted">'.$array[$i]["album_release_date"].'</small>
                                 </div>
                             </div>';
                 $seged++;
             }
             echo '</div>';
         }
+    }
+
+    public function searchMusic($musicid, $musicpath){
+        return $this->database->searchMusic($musicid, $musicpath);
+    }
+
+    public function searchByKey($key){
+        $resultArray = $this->database->searchByKey($key);
+        if(!empty($resultArray["music"])){
+            $music = $resultArray["music"];
+            $this->echoMusic($music);
+        }else{
+            echo "No music found!";
+        }
+        echo "<hr>";
+        if(!empty($resultArray["album"])){
+            $albums = $resultArray["album"];
+            $this->echoAlbums($albums);
+        }else{
+            echo "No albums found!";
+        }
+        
+    }
+
+    public function getLatestAlbums($limit){
+        $latestAlbums = $this->database->getLatestAlbums($limit);
+        $this->echoAlbums($latestAlbums);
     }
 
     public function getTracksFromAlbum($albumId){

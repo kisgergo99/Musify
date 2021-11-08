@@ -41,5 +41,23 @@ $(document).on('click','.album-item',function() {
       $("#framepage").html(response3);
         
     }
+  });
 });
+
+
+$("input[name=search-textbox]").keyup(function(e) {
 });
+
+$(document).on('change keyup paste',".search-textbox", function() {
+  $.ajax({
+    type: "GET",
+    async: false,
+    url: '/musify/pages/home/ajaxhandler.php?s='+$('input[name=search-textbox]').val(),
+    data: $(this).serialize(),
+    success: function(response4)
+    {
+      $(".music-result").html(response4);
+        
+    }
+  });
+ });

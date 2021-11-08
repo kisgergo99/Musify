@@ -21,6 +21,12 @@ if(isset($_GET['menu'])){
         }
 }
 
+if(isset($_REQUEST["s"])){
+    if(strlen($_REQUEST["s"]) > 2){
+        $music->searchByKey($_REQUEST['s']);
+    }
+}
+
 if(isset($_GET['musicInfo']) && isset($_GET['musicid']) && isset($_GET['musicpath'])){
     $data = $music->searchMusic($_REQUEST['musicid'], $_REQUEST['musicpath']);
     echo json_encode($data, JSON_UNESCAPED_UNICODE );

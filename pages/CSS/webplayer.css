@@ -55,6 +55,11 @@
     
 }
 
+.search-bar{
+    margin:auto;
+    width: 50%;
+}
+
 .playerbutton {
     padding: 0;
     border: 0;

@@ -145,11 +145,7 @@ class Database{
                 "music_artwork_path" => $this->filter($row['music_artwork_path']),
                );
             }else{
-                return $returnArray = array(
-                    "music_artist_name" => $this->filter("XD"),
-                    "music_track_name" => $this->filter("XD"),
-                    "music_artwork_path" => $this->filter("XD"),
-                   );
+                return $returnArray = array();
             }
         }
     }
@@ -211,6 +207,58 @@ class Database{
         }else{
             return $returnArray = array();
         };
+    }
+
+    public function searchByKey($key){
+        $key = "%".$this->filter($key)."%";
+        $stmt = $this->mysqli->prepare("SELECT * FROM albums WHERE albums.album_name LIKE ? OR albums.album_artist_name LIKE ?");
+        $stmt->bind_param("ss",$key,$key);
+        $stmtMusic = $this->mysqli->prepare("SELECT * FROM music WHERE music_track_name LIKE ? or music_artist_name LIKE ?");
+        $stmtMusic->bind_param("ss",$key,$key);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $i = 0;
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+               $returnAlbums[$i] = array(
+                "album_id" => $this->filter($row['album_id']),
+                "album_artist_name" => $this->filter($row['album_artist_name']),
+                "album_name" => $this->filter($row['album_name']),
+                "album_artwork_path" => $this->filter($row['album_artwork_path']),
+                "album_release_date" => $this->filter($row['album_release_date']),
+                "album_distributed_by" => $this->filter($row['album_distributed_by']),
+
+               );
+               $i++;
+            }else{
+                $returnAlbums = "No Music";
+            }
+        }
+        $stmt->close();
+        $stmtMusic->execute();
+        $resultMusic = $stmtMusic->get_result();
+        $a = 0;
+        while($rowM = mysqli_fetch_array($resultMusic)){
+            if($resultMusic->num_rows > 0){
+               $returnMusic[$a] = array(
+                "music_id" => $this->filter($rowM['music_id']),
+                "music_artist_name" => $this->filter($rowM['music_artist_name']),
+                "music_track_name" => $this->filter($rowM['music_track_name']),
+                "music_path" => $this->filter($rowM['music_path']),
+                "music_artwork_path" => $this->filter($rowM['music_artwork_path']),
+
+               );
+               $a++;
+            }else{
+                $returnMusic = "No music";
+            }
+        }
+        
+        return $returnArray = array(
+            "music" => $returnMusic,
+            "album" => $returnAlbums,
+        );
     }
 
 

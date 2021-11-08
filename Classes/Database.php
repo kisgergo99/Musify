@@ -14,6 +14,7 @@ class Database{
 
         if ($this->mysqli->connect_errno) {
             echo "Hiba a kapcsolódásban: " . $this->mysqli->connect_error;
+            echo "<br>Kérlek módosítsd a Classes/configuration.php fájlt!";
             exit();
             die();
         }else{
@@ -254,7 +255,7 @@ class Database{
                 $returnMusic = "No music";
             }
         }
-        
+
         return $returnArray = array(
             "music" => $returnMusic,
             "album" => $returnAlbums,

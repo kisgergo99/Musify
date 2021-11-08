@@ -6,6 +6,10 @@ if(isset($_GET['status'])){
     $statuscode = '';
 }
 
+if(!file_exists("./Classes/configuration.php")){
+    $statuscode = "missingconf";
+}
+
 switch($statuscode){
     default:
         include(__DIR__."/Controller/Selector.php");
@@ -39,6 +43,32 @@ switch($statuscode){
         echo "</center></div>";
         include(__DIR__."/Controller/Selector.php");
         break;
+    case "missingconf":
+        echo "You need to enter your MySQL connection first!";
+        echo "<h3>If you hadn't already imported the included SQL file into your database ('SQL/musify.sql'), please do it!</h3>";
+        echo "<form method='POST' enctype='application/x-www-form-urlencoded'>
+                Host: <input type='text' name='host' id='host'>
+                Username: <input type='text' name='username' id='username'>
+                Password: <input type='password' name='password' id='password'>
+                Database name: <input type='text' name='dbname' id='dbname'>
+                <input type='submit' name='submit' id='submit' value='Save configuration'>
+                </form>
+        ";
+}
+
+if(isset($_POST['host']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['dbname'])){
+    $conffile = fopen("./Classes/configuration.php", "w");
+    $conftxt = '<?php
+
+    const HOST = "'.$_POST["host"].'";
+    const USER = "'.$_POST["username"].'";
+    const PASS = "'.$_POST["password"].'";
+    const DBNAME = "'.$_POST["dbname"].'";
+
+?>';
+    fwrite($conffile, $conftxt);
+    fclose($conffile);
+    header("Location: ./");
 }
 
 ?>

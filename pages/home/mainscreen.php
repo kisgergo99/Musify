@@ -24,8 +24,8 @@ $usertype = new Usertype();
             <i class="fa fa-user" aria-hidden="true"></i> <b> <?php echo($usertype->getLastname()); ?> </b>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
-          <a class="dropdown-item bg-primary text-white" href="#"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>
+          <a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+          <a class="dropdown-item bg-primary text-white" href="javascript:void(0);"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>
           <form action="logout.php" method="POST" enctype='application/x-www-form-urlencoded'>
             <button type="submit" class="dropdown-item" name="kijelentkezes" id="kijelentkezes"><i class="fa fa-sign-out-alt" aria-hidden="true"></i> Log out</button>
           </form>

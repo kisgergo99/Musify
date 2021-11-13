@@ -4,6 +4,8 @@ spl_autoload_register(function ($name) {
 });
 $music = new Music();
 
+
+//EZ A MENÜKNEK
 if(isset($_GET['menu'])){
     switch($_REQUEST["menu"]){
         default:
@@ -21,15 +23,22 @@ if(isset($_GET['menu'])){
         }
 }
 
+//EZ A KERESÉS FUNKCIÓNAK MEGY
 if(isset($_REQUEST["s"])){
-    if(strlen($_REQUEST["s"]) > 2){
+    if(strlen($_REQUEST["s"]) > 0){
         $music->searchByKey($_REQUEST['s']);
     }
 }
 
-if(isset($_GET['musicInfo']) && isset($_GET['musicid']) && isset($_GET['musicpath'])){
-    $data = $music->searchMusic($_REQUEST['musicid'], $_REQUEST['musicpath']);
-    echo json_encode($data, JSON_UNESCAPED_UNICODE );
+
+//EZ A WEBPLAYERNEK MEGY, A ZENEI INFÓKRÓL
+if(isset($_GET['musicInfo']) && isset($_GET['musicid'])){
+    $data = $music->searchMusic($music->decrypt($_REQUEST['musicid']));
+    if(is_array($data)){
+        echo json_encode($data, JSON_UNESCAPED_UNICODE );
+    }else{
+        echo "Please subscribe to listen music!";
+    }
     exit;
 }
 

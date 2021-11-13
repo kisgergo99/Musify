@@ -9,6 +9,38 @@ class Music{
         $this->usertype = new Usertype();
     }
 
+       /* OPENSSL Ecrypt-Decrypt felhasználói jelszavakra */
+    private function encrypt_decrypt($action, $string) {
+        $encrypt_method = "AES-256-CBC";
+        $secret_key = 'szemusify-2021-projektmunka2';
+        $secret_iv = '14785236987456321';
+
+        // hash
+        $key = hash('sha256', $secret_key);
+        
+        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+        if ( $action == 'encrypt' ) {
+            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+            $output = base64_encode($output);
+        } else if( $action == 'decrypt' ) {
+            $string = base64_decode($string);
+            $output = openssl_decrypt($string, $encrypt_method, $key, 0, $iv);
+            
+        }
+
+        return $output;
+    }
+
+    public function encrypt($value){
+        return $this->encrypt_decrypt('encrypt', $value);
+    }
+
+    public function decrypt($value){
+        return $this->encrypt_decrypt('decrypt', $value);
+    }
+
     public function getMusicList(){
         $musiclist = $this->database->getMusicList();
         echo '<h3 class="text-center">Latest uploaded</h3><hr>';
@@ -21,7 +53,7 @@ class Music{
         <ul id="list" style="list-style:none; width:75%; margin: auto;">';
         foreach($musiclist as $m){
             echo "<li>
-                <a href='#' class='singleMusicMenu list-group-item list-group-item-action list-group-item-dark' data-value='".$m['music_path']."' music-id='".$m['music_id']."'>".$m['music_artist_name']." - ".$m['music_track_name']."</a>
+                <a href='#' class='singleMusicMenu list-group-item list-group-item-action list-group-item-dark' data-value='getmusic.php?music-id=".$this->encrypt($m['music_id'])."' music-id='".$this->encrypt($m['music_id'])."'>".$m['music_artist_name']." - ".$m['music_track_name']."</a>
             </li>";
         }
         echo "</ul></div> ";
@@ -54,8 +86,12 @@ class Music{
         }
     }
 
-    public function searchMusic($musicid, $musicpath){
-        return $this->database->searchMusic($musicid, $musicpath);
+    public function searchMusic($musicid){
+        if($this->usertype->isSubscribed()){
+            return $this->database->searchMusic($musicid);
+        }else{
+            return "Please subscribe to listen music!";
+        }
     }
 
     public function searchByKey($key){
@@ -101,6 +137,10 @@ class Music{
             $this->echoMusic($albumArray);
             echo '<hr><small class="center">'.$albumArray[0]['album_distributed_by'].'</small>';
         }
+    }
+
+    public function getMusicLocationById($id){
+        return $this->database->getMusicLocationById($id);
     }
 }
 

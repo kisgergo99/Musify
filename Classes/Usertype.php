@@ -56,6 +56,10 @@ class Usertype{
         }
     }
 
+    public function isSubscribed(){
+        return $this->database->isSubscribed($_SESSION['user']['username']);
+    }
+
     public function dropSession(){
         unset($_SESSION['user']);
     }

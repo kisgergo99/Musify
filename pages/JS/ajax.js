@@ -21,11 +21,14 @@ $(document).on('click','.singleMusicMenu',function() {
       data: $(this).serialize(),
       success: function(response1)
       {
+        if(isJson(response1)){
           var data = JSON.parse(response1);
           $(".music-artwork").attr("src", data.music_artwork_path);
           $(".music-artist-name").text(data.music_artist_name);
           $(".music-track-name").text(data.music_track_name);
-          
+        }else{
+          $(".music-artist-name").text("Please subscribe to listen music!");
+        }
       }
   });
 });
@@ -45,9 +48,6 @@ $(document).on('click','.album-item',function() {
 });
 
 
-$("input[name=search-textbox]").keyup(function(e) {
-});
-
 $(document).on('change keyup paste',".search-textbox", function() {
   $.ajax({
     type: "GET",
@@ -61,3 +61,12 @@ $(document).on('change keyup paste',".search-textbox", function() {
     }
   });
  });
+
+function isJson(str) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}

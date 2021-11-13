@@ -25,6 +25,7 @@ class Database{
 
 
 
+
     /* -- USER -- */
 
     public function getUserCredentials($email){
@@ -41,15 +42,17 @@ class Database{
                     "user_email" => $this->filter($row['user_email']),
                     "user_password" => $this->filter($row['user_password']),
                     "user_type" => $row['user_type'],
+                    "user_subscription_status" => $this->filter($row['user_subscription_status']),
                 );
             }
         }
         if(isset($userArray)){
             return $userArray;
+            $stmt->close();
         }else{
             return $userArray = array();
+            $stmt->close();
         };
-        $stmt->close();
     }
 
     public function getLastname($username){
@@ -60,8 +63,10 @@ class Database{
         while($row = mysqli_fetch_array($result)){
             if($result->num_rows > 0){
                 return $this->filter($row['user_lastname']);
+                $stmt->close();
             }else{
                 return "UNKNOWN";
+                $stmt->close();
             }
         }
     }
@@ -74,8 +79,10 @@ class Database{
         while($row = mysqli_fetch_array($result)){
             if($result->num_rows > 0){
                 return true;
+                $stmt->close();
             }else{
                 return false;
+                $stmt->close();
             }
         }
     }
@@ -97,10 +104,28 @@ class Database{
         $stmt->bind_param("sssssisi", $username, $hashedpass, $user_email, $firstname, $lastname, $sub, $subExpire, $usertype);
         if($stmt->execute()){
             return true;
+            $stmt->close();
         }else{
             return false;
+            $stmt->close();
         }
-        $stmt->close();
+    }
+
+    public function isSubscribed($username){
+        $stmt = $this->mysqli->prepare("SELECT user_subscription_status FROM users WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                if($row['user_subscription_status'] == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
     }
 
 
@@ -128,14 +153,16 @@ class Database{
 
         if(isset($returnArray)){
             return $returnArray;
+            $stmt->close();
         }else{
             return $returnArray = array();
+            $stmt->close();
         };
     }
 
-    public function searchMusic($musicid, $musicpath){
-        $stmt = $this->mysqli->prepare("SELECT music_id, music_artist_name, music_track_name, music_artwork_path FROM music WHERE music_id=? AND music_path=?");
-        $stmt->bind_param("is", $musicid, $musicpath);
+    public function searchMusic($musicid){
+        $stmt = $this->mysqli->prepare("SELECT music_id, music_artist_name, music_track_name, music_artwork_path FROM music WHERE music_id=?");
+        $stmt->bind_param("i", $musicid);
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = mysqli_fetch_array($result)){
@@ -145,8 +172,10 @@ class Database{
                 "music_track_name" => $this->filter($row['music_track_name']),
                 "music_artwork_path" => $this->filter($row['music_artwork_path']),
                );
+               $stmt->close();
             }else{
                 return $returnArray = array();
+                $stmt->close();
             }
         }
     }
@@ -172,8 +201,10 @@ class Database{
 
         if(isset($returnArray)){
             return $returnArray;
+            $stmt->close();
         }else{
             return $returnArray = array();
+            $stmt->close();
         };
     }
 
@@ -205,9 +236,12 @@ class Database{
 
         if(isset($returnArray)){
             return $returnArray;
+            $stmt->close();
         }else{
             return $returnArray = array();
+            $stmt->close();
         };
+        
     }
 
     public function searchByKey($key){
@@ -260,6 +294,20 @@ class Database{
             "music" => $returnMusic,
             "album" => $returnAlbums,
         );
+    }
+
+    public function getMusicLocationById($id){
+        $stmt = $this->mysqli->prepare("SELECT music_id, music_path FROM music WHERE music_status=1 AND music_id=?");
+        $stmt->bind_param("i",$id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                return $row['music_path'];
+            }
+        }
+
+        $stmt->close();
     }
 
 
@@ -317,6 +365,7 @@ class Database{
     
         if ( $result->num_rows > 0 ) {
              return false;
+             
         }else{
             return true;
         }

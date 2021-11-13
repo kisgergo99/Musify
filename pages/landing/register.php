@@ -43,10 +43,11 @@ if(isset($_POST["register"])){
                 $msg .= $e."=1&";
             }
             header('Location: '. "./index.php?status=failedRegister&".$msg);
+            unset($msg);
 			die();
         }
     }else{
-        header('Location: '. "../../index.php?status=failedRegister");
+        header('Location: '. "./index.php?status=failedRegister");
 		die();
     }
 }else{

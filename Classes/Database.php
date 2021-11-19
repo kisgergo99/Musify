@@ -111,21 +111,68 @@ class Database{
         }
     }
 
+    private function changeSubscription($username, $to){
+        $stmt = $this->mysqli->prepare("UPDATE users SET user_subscription_status=?, user_subscription_expiredate=? WHERE username=?");
+        if($to==0){
+            $null = NULL;
+            $stmt->bind_param("iss", $to, $null, $username);
+        }else{
+            $stmt->bind_param("iss", $to, date("Y-m-d", time() + 2592000), $username);
+        }
+        $stmt->execute();
+        $stmt->close();
+    }
+
     public function isSubscribed($username){
-        $stmt = $this->mysqli->prepare("SELECT user_subscription_status FROM users WHERE username=?");
+        $stmt = $this->mysqli->prepare("SELECT user_subscription_status, user_subscription_expiredate FROM users WHERE username=?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
         while($row = mysqli_fetch_array($result)){
             if($result->num_rows > 0){
-                if($row['user_subscription_status'] == 1){
-                    return true;
-                }else{
+                if($row['user_subscription_expiredate'] < date("Y-m-d")){
+                    $this->changeSubscription($username, 0);
                     return false;
+                }else{
+                    if($row['user_subscription_status'] == 1){
+                        return true;
+                        $stmt->close();
+                    }else{
+                        return false;
+                        $stmt->close();
+                    }
                 }
             }
         }
+    }
+
+    public function getUserPrivilege($username){
+        $stmt = $this->mysqli->prepare("SELECT user_type FROM users WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                return $row['user_type'];
+            }
+        }
+        $stmt->close();
+    }
+
+    public function getDistributorId($username){
+        $stmt = $this->mysqli->prepare("SELECT user_distributor_id FROM users WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                return $row['user_distributor_id'];
+            }
+        }
+        $stmt->close();
     }
 
 
@@ -208,10 +255,16 @@ class Database{
         };
     }
 
-    public function getAlbumInfo($albumId){
-        $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=? AND music_status=1");
+    public function getAlbumInfo($albumId, $status){
         $id = $albumId;
-        $stmt->bind_param("ii", $id, $id);
+        if($status == 3){
+            $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=?");
+            $stmt->bind_param("ii", $id, $id);
+        }else{
+            $stmt = $this->mysqli->prepare("SELECT * FROM albums, music WHERE music.album_id=? AND albums.album_id=? AND music_status=?");
+            $stmt->bind_param("iii", $id, $id, $status);
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result();
         $i = 0;
@@ -225,6 +278,7 @@ class Database{
                     "album_release_date" => $this->filter($row['album_release_date']),
                     "album_distributed_by" => $this->filter($row['album_distributed_by']),
                     "music_id" => $this->filter($row['music_id']),
+                    "music_status" => $this->filter($row['music_status']),
                     "music_artist_name" => $this->filter($row['music_artist_name']),
                     "music_track_name" => $this->filter($row['music_track_name']),
                     "music_path" => $this->filter($row['music_path']),
@@ -308,6 +362,35 @@ class Database{
         }
 
         $stmt->close();
+    }
+
+    public function getAlbumsToDistributor($dId){
+        $stmt = $this->mysqli->prepare("SELECT * FROM albums WHERE album_distributed_id=?");
+        $stmt->bind_param("i", $dId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $i=0;
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray[$i] = array(
+                    "album_id" => $this->filter($row['album_id']),
+                    "album_artist_name" => $this->filter($row['album_artist_name']),
+                    "album_name" => $this->filter($row['album_name']),
+                    "album_artwork_path" => $this->filter($row['album_artwork_path']),
+                    "album_release_date" => $this->filter($row['album_release_date']),
+                    "album_distributed_by" => $this->filter($row['album_distributed_by']),
+                );
+            }
+            $i++;
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+            $stmt->close();
+        }else{
+            return $returnArray = array();
+            $stmt->close();
+        };
     }
 
 

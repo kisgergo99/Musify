@@ -24,10 +24,29 @@ class Usertype{
 		}
 	}
 
+    public function getPrivilege($username){
+        $priv = $this->database->getUserPrivilege($username);
+        switch ($priv) {
+            case '0':
+                return 'user';
+                break;
+            case '2':
+                return 'distributor';
+                break;
+            case '1':
+                return 'admin';
+                break;
+            default:
+                return 'user';
+                break;
+        }
+    }
+
     public function createLoginSession(string $username){
         $_SESSION['user']['username'] = $username;
         $this->username = $username;
-        $_SESSION['user']['type'] = 'user';
+        $_SESSION['user']['type'] = $this->getPrivilege($username);
+        
     }
 
     public function isLoggedIn(){
@@ -54,6 +73,10 @@ class Usertype{
             }
             
         }
+    }
+
+    public function getDistributorId(){
+        return $this->database->getDistributorId($this->getUsername());
     }
 
     public function isSubscribed(){

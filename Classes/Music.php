@@ -118,7 +118,7 @@ class Music{
     }
 
     public function getTracksFromAlbum($albumId){
-        $albumArray = $this->database->getAlbumInfo($albumId);
+        $albumArray = $this->database->getAlbumInfo($albumId, 1);
         if(!empty($albumArray)){
             echo '
             <table class="album-displaycontainer">

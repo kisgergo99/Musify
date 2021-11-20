@@ -175,6 +175,24 @@ class Database{
         $stmt->close();
     }
 
+    public function canItPublish($distributorId){
+        $stmt = $this->mysqli->prepare("SELECT distributor_publish_status FROM distributors WHERE distributor_id=?");
+        $stmt->bind_param("i", $distributorId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                if($row['distributor_publish_status'] == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        $stmt->close();
+    }
+
 
 
 
@@ -392,6 +410,63 @@ class Database{
             $stmt->close();
         };
     }
+
+    public function deleteAlbum($id){
+        $stmt = $this->mysqli->prepare("DELETE FROM albums WHERE album_id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        $stmtMusic = $this->mysqli->prepare("DELETE FROM music WHERE album_id=?");
+        $stmtMusic->bind_param("i", $id);
+        $stmtMusic->execute();
+        $stmtMusic->close();
+        
+
+    }
+
+    public function updateAlbum($updateArray){
+        $stmt = $this->mysqli->prepare("UPDATE albums SET album_name=?, album_artist_name=?, album_release_date=?, album_artwork_path=? WHERE album_id=?");
+        $stmt->bind_param("sssss", $updateArray['album_name'], $updateArray['album_artist_name'], $updateArray['album_release_date'], $updateArray['album_artwork_path'], $updateArray['album_id']);
+        $status = $stmt->execute() or die($stmt->error);
+        $stmt->close();
+
+        $stmtMusic = $this->mysqli->prepare("UPDATE music SET music_artist_name=?, music_track_name=?, music_path=?, music_status=? WHERE album_id=? AND music_id=?");
+        for($i = 0; $i<$updateArray['count']; $i++){
+            if($updateArray['music_status_'.$i] == "on"){
+                $updateArray['music_status_'.$i] = 1;
+            }else{
+                $updateArray['music_status_'.$i] = 0;
+            }
+            $stmtMusic->bind_param("ssssss", $updateArray['music_artist_name_'.$i], $updateArray['music_track_name_'.$i], $updateArray['music_path_'.$i], $updateArray['music_status_'.$i], $updateArray['album_id'], $updateArray['music_id_'.$i]);
+            $stmtMusic->execute();
+        }
+        $stmtMusic->close();
+        
+    }
+
+    public function createAlbum($createArray, $distributorId){
+        $stmt = $this->mysqli->prepare("INSERT INTO albums (album_artist_name, album_name, album_artwork_path, album_release_date, album_distributed_by, album_distributed_id) VALUES (?,?,?,?,(SELECT distributor_name FROM distributors WHERE distributor_id=?),?)");
+        $stmt->bind_param("ssssii", $createArray['album_artist_name'], $createArray['album_name'], $createArray['album_artwork_path'], $createArray['album_release_date'], $distributorId, $distributorId);
+        $status = $stmt->execute() or die($stmt->error);
+        
+
+        $now = date("Y-m-d");
+        $latestAlbumId= $stmt->insert_id;
+        $stmtMusic = $this->mysqli->prepare("INSERT INTO music (music_artist_name, music_track_name, music_path, music_artwork_path, music_status, music_updated, album_id, music_distributed_by, music_distributed_id) VALUES (?,?,?,?,?,?,?,(SELECT distributor_name FROM distributors WHERE distributor_id=?),?)");
+        for($i = 1; $i<$createArray['count']+1; $i++){
+            if($createArray['music_status_'.$i] == "on"){
+                $createArray['music_status_'.$i] = 1;
+            }else{
+                $createArray['music_status_'.$i] = 0;
+            }
+            $stmtMusic->bind_param("sssssssss", $createArray['music_artist_name_'.$i], $createArray['music_track_name_'.$i], $createArray['music_path_'.$i], $createArray['music_artwork_path_'.$i], $createArray['music_status_'.$i], $now, $latestAlbumId, $distributorId, $distributorId);
+            $stmtMusic->execute() or die($stmt->error);
+        }
+        $stmt->close();
+        $stmtMusic->close();
+        
+    }
+
 
 
 

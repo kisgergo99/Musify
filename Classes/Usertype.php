@@ -79,6 +79,10 @@ class Usertype{
         return $this->database->getDistributorId($this->getUsername());
     }
 
+    public function publish(){
+        return $this->database->canItPublish($this->getDistributorId());
+    }
+
     public function isSubscribed(){
         return $this->database->isSubscribed($_SESSION['user']['username']);
     }

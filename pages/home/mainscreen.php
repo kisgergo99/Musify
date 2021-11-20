@@ -38,7 +38,7 @@ $usertype = new Usertype();
   </div>
 </nav>
 
-<div class="framepage" id="framepage" style="padding-bottom: 120px; padding-left: 2%; padding-right: 2%"></div>
+<div class="framepage" id="framepage" style="padding-bottom: 140px; padding-left: 2%; padding-right: 2%"></div>
 <link rel="stylesheet" href="/musify/pages/CSS/webplayer.css">
 
 <footer>

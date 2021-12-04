@@ -30,6 +30,4 @@ if(isset($_GET['music-id'])){
     echo "You don't have permission to access this content.";
 }
 
-
-
 ?>

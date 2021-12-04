@@ -24,7 +24,6 @@ $usertype = new Usertype();
             <i class="fa fa-user" aria-hidden="true"></i> <b> <?php echo($usertype->getLastname()); ?> </b>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
           <?php if($_SESSION['user']['type'] == 'distributor'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Upload Music</a>';} ?>
           <?php if($_SESSION['user']['type'] == 'admin'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Admin Panel</a>';} ?>
           <?php if(!$usertype->isSubscribed($usertype->getUsername())){echo '<a class="dropdown-item bg-primary text-white" href="javascript:void(0);"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>';} ?>

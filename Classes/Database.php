@@ -33,7 +33,6 @@ class Database{
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-
         while($row = mysqli_fetch_array($result)){
             if($result->num_rows > 0){
                 $userArray = array(
@@ -47,6 +46,65 @@ class Database{
             }
         }
         if(isset($userArray)){
+            return $userArray;
+            $stmt->close();
+        }else{
+            return $userArray = array();
+            $stmt->close();
+        };
+    }
+
+    public function getUsers(){
+        $stmt = $this->mysqli->prepare("SELECT user_id, username, user_email, user_firstname, user_lastname, user_subscription_status, user_subscription_expiredate, user_type, user_distributor_id FROM users");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $i = 0;
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $userArray[$i] = array(
+                    "user_id" => $this->filter($row['user_id']),
+                    "username" => $this->filter($row['username']),
+                    "user_email" => $this->filter($row['user_email']),
+                    "user_firstname" => $this->filter($row['user_firstname']),
+                    "user_lastname" => $this->filter($row['user_lastname']),
+                    "user_subscription_status" => $this->filter($row['user_subscription_status']),
+                    "user_subscription_expiredate" => $this->filter($row['user_subscription_expiredate']),
+                    "user_type" => $row['user_type'],
+                    "user_distributor_id" => $this->filter($row['user_distributor_id']),
+                );
+            }
+            $i++;
+        }
+        if(!empty($userArray)){
+            return $userArray;
+            $stmt->close();
+        }else{
+            return $userArray = array();
+            $stmt->close();
+        };
+    }
+
+    public function getUserById($id){
+        $stmt = $this->mysqli->prepare("SELECT user_id, username, user_email, user_firstname, user_lastname, user_subscription_status, user_subscription_expiredate, user_type, user_distributor_id FROM users WHERE user_id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $userArray = array(
+                    "user_id" => $this->filter($row['user_id']),
+                    "username" => $this->filter($row['username']),
+                    "user_email" => $this->filter($row['user_email']),
+                    "user_firstname" => $this->filter($row['user_firstname']),
+                    "user_lastname" => $this->filter($row['user_lastname']),
+                    "user_subscription_status" => $this->filter($row['user_subscription_status']),
+                    "user_subscription_expiredate" => $this->filter($row['user_subscription_expiredate']),
+                    "user_type" => $row['user_type'],
+                    "user_distributor_id" => $this->filter($row['user_distributor_id']),
+                );
+            }
+        }
+        if(!empty($userArray)){
             return $userArray;
             $stmt->close();
         }else{
@@ -190,6 +248,36 @@ class Database{
                 }
             }
         }
+        $stmt->close();
+    }
+
+    public function editUser($editArray){
+        $stmt = $this->mysqli->prepare("UPDATE users SET username=?, user_subscription_status=?, user_subscription_expiredate=?, user_type=?, user_distributor_id=? WHERE user_id=?");
+        if($editArray['user_subscription_status'] == 'on'){
+            $usersub = 1;
+        }else{
+            $usersub = 0;
+        }
+
+        if($editArray['user_type'] == 'listener') {$usertype = 0;}
+        if($editArray['user_type'] == 'admin') {$usertype = 1;}
+        if($editArray['user_type'] == 'distributor') {$usertype = 2;}
+
+        if($usertype == 2){
+            $distid=$editArray['distributor_select'];
+        }else{
+            $distid=NULL;
+        }
+        $stmt->bind_param("sisiii", $editArray['username'], $usersub, $editArray['user_subscription_expiredate'], $usertype, $distid, $editArray['user_id']);
+        $status = $stmt->execute() or die($stmt->error);
+        $stmt->close();
+
+    }
+
+    public function deleteUser($id){
+        $stmt = $this->mysqli->prepare("DELETE FROM users WHERE user_id=?");
+        $stmt->bind_param("i", $id);
+        $status = $stmt->execute() or die($stmt->error);
         $stmt->close();
     }
 
@@ -475,6 +563,86 @@ class Database{
 
     public function closeConn(){
         $this->mysqli->close();
+    }
+
+    public function getDistributorList(){
+        $stmt = $this->mysqli->prepare("SELECT * FROM distributors");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $i = 0;
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray[$i] = array(
+                    "distributor_id" => $this->filter($row['distributor_id']),
+                    "distributor_name" => $this->filter($row['distributor_name']),
+                    "distributor_publish_status" => $this->filter($row['distributor_publish_status']),
+                );
+            }
+            $i++;
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+            $stmt->close();
+        }else{
+            return $returnArray = array();
+            $stmt->close();
+        };
+    }
+
+    public function getDistById($id){
+        $stmt = $this->mysqli->prepare("SELECT * FROM distributors WHERE distributor_id=?");
+        $stmt->bind_param('i',$id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = mysqli_fetch_array($result)){
+            if($result->num_rows > 0){
+                $returnArray = array(
+                    "distributor_id" => $this->filter($row['distributor_id']),
+                    "distributor_name" => $this->filter($row['distributor_name']),
+                    "distributor_publish_status" => $this->filter($row['distributor_publish_status']),
+                );
+            }
+        }
+
+        if(isset($returnArray)){
+            return $returnArray;
+            $stmt->close();
+        }else{
+            return $returnArray = array();
+            $stmt->close();
+        };
+    }
+
+    public function editDist($editArray){
+        $stmt = $this->mysqli->prepare("UPDATE distributors SET distributor_name=?, distributor_publish_status=? WHERE distributor_id=?");
+        if($editArray['dist_publish_status'] == 'on'){
+            $diststat = 1;
+        }else{
+            $diststat = 0;
+        }
+        $stmt->bind_param("sii", $editArray['dist_name'], $diststat, $editArray['dist_id']);
+        $status = $stmt->execute() or die($stmt->error);
+        $stmt->close();
+    }
+
+    public function addDist($array){
+        $stmt = $this->mysqli->prepare("INSERT INTO distributors (distributor_name, distributor_publish_status) VALUES (?,?)");
+        if($array['dist_publish_status'] == 'on'){
+            $diststat = 1;
+        }else{
+            $diststat = 0;
+        }
+        $stmt->bind_param("si", $array['dist_name'], $diststat);
+        $status = $stmt->execute() or die($stmt->error);
+        $stmt->close();
+    }
+
+    public function deleteDist($id){
+        $stmt = $this->mysqli->prepare("DELETE FROM distributors WHERE distributor_id=?");
+        $stmt->bind_param("i", $id);
+        $status = $stmt->execute() or die($stmt->error);
+        $stmt->close();
     }
 
     private function generateUsername($firstname, $lastname){

@@ -11,7 +11,7 @@ $usertype = new Usertype();
   <div class="collapse navbar-collapse navbarNav" id="myNavLol">
     <ul class="navbar-nav ">
       <li class="nav-item active">
-        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_browse"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_browse" ><i class="fa fa-home" aria-hidden="true"></i> Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_albums"><i class="fa fa-align-justify" aria-hidden="true"></i> Albums</a>
@@ -24,7 +24,6 @@ $usertype = new Usertype();
             <i class="fa fa-user" aria-hidden="true"></i> <b> <?php echo($usertype->getLastname()); ?> </b>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
           <?php if($_SESSION['user']['type'] == 'distributor'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Upload Music</a>';} ?>
           <?php if($_SESSION['user']['type'] == 'admin'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Admin Panel</a>';} ?>
           <?php if(!$usertype->isSubscribed($usertype->getUsername())){echo '<a class="dropdown-item bg-primary text-white" href="javascript:void(0);"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>';} ?>
@@ -38,7 +37,7 @@ $usertype = new Usertype();
   </div>
 </nav>
 
-<div class="framepage" id="framepage" style="padding-bottom: 120px; padding-left: 2%; padding-right: 2%"></div>
+<div class="framepage" id="framepage" style="padding-bottom: 140px; padding-left: 2%; padding-right: 2%"></div>
 <link rel="stylesheet" href="/musify/pages/CSS/webplayer.css">
 
 <footer>

@@ -13,9 +13,6 @@ if(isset($_POST['bejelentkezes'])){
 		(password_verify($passw, $usertype->getUserByEmail($user)['user_password'])))){
 			
 			
-			//Itt legyen egy függvény, ami ellenőrzi az adatbázisban, hogy megerősítette-e az email verificationt!
-			
-			
 			$usertype->createLoginSession($usertype->getUserByEmail($user)['username'], $captcha);
 			header('Location: '. "./index.php");
 			die();

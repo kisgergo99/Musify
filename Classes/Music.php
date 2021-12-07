@@ -53,7 +53,7 @@ class Music{
         <ul id="list" style="list-style:none; width:75%; margin: auto;">';
         foreach($musiclist as $m){
             echo "<li>
-                <a href='#' class='singleMusicMenu list-group-item list-group-item-action list-group-item-dark' data-value='getmusic.php?music-id=".$this->encrypt($m['music_id'])."' music-id='".$this->encrypt($m['music_id'])."'>".$m['music_artist_name']." - ".$m['music_track_name']."</a>
+                <a href='#' class='singleMusicMenu list-group-item list-group-item-action list-group-item-dark' data-value='getmusic.php?music-id=".$this->encrypt($m['music_id'])."' music-id='".$this->encrypt($m['music_id'])."'><b>".$m['music_artist_name']."</b> - ".$m['music_track_name']."</a>
             </li>";
         }
         echo "</ul></div> ";
@@ -123,11 +123,11 @@ class Music{
             echo '
             <table class="album-displaycontainer">
                 <tr>
-                    <th><img class="w-75" src="'.$albumArray[0]['album_artwork_path'].'" /></th>
+                    <th style="width: 30%"><img class="w-75" src="'.$albumArray[0]['album_artwork_path'].'" /></th>
                     <th>
                         <h1>'.$albumArray[0]['album_name'].'</h1>
                         <hr>
-                        <h3>'.$albumArray[0]['album_artist_name'].'</h3>
+                        <h3><b>'.$albumArray[0]['album_artist_name'].'</b></h3>
                         <p>'.$albumArray[0]['album_release_date'].'</p>
                     </th>
                 </tr> 

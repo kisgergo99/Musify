@@ -2,9 +2,10 @@ $(document).ready(function(){
   $(".clickableMenu").click(function(){
     $.ajax({
       type: "GET",
-      async: false,
+      async: true,
       url: '/musify/pages/home/ajaxhandler.php?menu='+$(this).attr('id'),
       data: $(this).serialize(),
+      timeout: 3000,
       success: function(response2)
       {
           $("#framepage").html(response2);
@@ -16,9 +17,10 @@ $(document).ready(function(){
 $(document).on('click','.singleMusicMenu',function() {
   $.ajax({
       type: "GET",
-      async: false,
+      async: true,
       url: '/musify/pages/home/ajaxhandler.php?musicInfo=2&musicid='+$(this).attr('music-id')+'&musicpath='+$(this).attr('data-value'),
       data: $(this).serialize(),
+      timeout: 3000,
       success: function(response1)
       {
         if(isJson(response1)){
@@ -36,9 +38,10 @@ $(document).on('click','.singleMusicMenu',function() {
 $(document).on('click','.album-item',function() {
   $.ajax({
     type: "GET",
-    async: false,
+    async: true,
     url: '/musify/pages/home/albums.php?albumPage='+$(this).attr("album-id"),
     data: $(this).serialize(),
+    timeout: 3000,
     success: function(response3)
     {
       $("#framepage").html(response3);
@@ -51,9 +54,10 @@ $(document).on('click','.album-item',function() {
 $(document).on('change keyup paste',".search-textbox", function() {
   $.ajax({
     type: "GET",
-    async: false,
+    async: true,
     url: '/musify/pages/home/ajaxhandler.php?s='+$('input[name=search-textbox]').val(),
     data: $(this).serialize(),
+    timeout: 3000,
     success: function(response4)
     {
       $(".music-result").html(response4);

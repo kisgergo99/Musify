@@ -11,7 +11,7 @@ $usertype = new Usertype();
   <div class="collapse navbar-collapse navbarNav" id="myNavLol">
     <ul class="navbar-nav ">
       <li class="nav-item active">
-        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_browse"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+        <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_browse" ><i class="fa fa-home" aria-hidden="true"></i> Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link clickableMenu" href="javascript:void(0);" id="menu_albums"><i class="fa fa-align-justify" aria-hidden="true"></i> Albums</a>

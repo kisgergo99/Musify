@@ -6,6 +6,8 @@ $music = new Music();
 if(isset($_GET['music-id'])){
     if($usertype->isLoggedIn() && $usertype->isSubscribed()){
         $id = $music->decrypt($_GET['music-id']);
+
+
         $musicpath = $music->getMusicLocationById($id);
         $real_path = "{$_SERVER['DOCUMENT_ROOT']}$musicpath";
         $filename = pathinfo($real_path)["basename"];

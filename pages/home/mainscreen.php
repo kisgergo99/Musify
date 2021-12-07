@@ -26,7 +26,7 @@ $usertype = new Usertype();
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <?php if($_SESSION['user']['type'] == 'distributor'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Upload Music</a>';} ?>
           <?php if($_SESSION['user']['type'] == 'admin'){echo '<a class="dropdown-item" href="/musify/pages/admin"><i class="fa fa-cog" aria-hidden="true"></i> Admin Panel</a>';} ?>
-          <?php if(!$usertype->isSubscribed($usertype->getUsername())){echo '<a class="dropdown-item bg-primary text-white" href="javascript:void(0);"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>';} ?>
+          <?php if(!$usertype->isSubscribed($usertype->getUsername())){echo '<a class="dropdown-item bg-primary text-white" href="?givesub=1"><i class="fa fa-check" aria-hidden="true"></i> Subscribe to Musify</a>';} ?>
           <form action="logout.php" method="POST" enctype='application/x-www-form-urlencoded'>
             <button type="submit" class="dropdown-item" name="kijelentkezes" id="kijelentkezes"><i class="fa fa-sign-out-alt" aria-hidden="true"></i> Log out</button>
           </form>
@@ -82,4 +82,13 @@ $usertype = new Usertype();
 
 
 </body>
+
+<?php
+
+if(isset($_GET['givesub'])){
+  $usertype->giveSub($usertype->getUsername(), 1);
+  redirect("../");
+}
+
+?>
     

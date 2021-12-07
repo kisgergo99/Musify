@@ -169,13 +169,14 @@ class Database{
         }
     }
 
-    private function changeSubscription($username, $to){
+    public function changeSubscription($username, $to){
         $stmt = $this->mysqli->prepare("UPDATE users SET user_subscription_status=?, user_subscription_expiredate=? WHERE username=?");
         if($to==0){
             $null = NULL;
             $stmt->bind_param("iss", $to, $null, $username);
         }else{
-            $stmt->bind_param("iss", $to, date("Y-m-d", time() + 2592000), $username);
+            $date = date("Y-m-d", time() + 2592000);
+            $stmt->bind_param("iss", $to, $date, $username);
         }
         $stmt->execute();
         $stmt->close();

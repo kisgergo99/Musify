@@ -95,6 +95,10 @@ class Usertype{
 		return $this->database->getUserCredentials($email);
 	}
 
+    public function giveSub($username, $to){
+        $this->database->changeSubscription($username, $to);
+    }
+
 }
 
 ?>

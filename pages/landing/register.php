@@ -36,7 +36,7 @@ if(isset($_POST["register"])){
                 header('Location: '. "./index.php?status=registerDone");
 			    die();
             }else{
-                echo "szar van a levesben:D";
+                echo "Failed to register user. Please try again!";
             }
         }else{
             foreach($errors as $e){

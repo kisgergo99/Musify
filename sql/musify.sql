@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2021. Nov 08. 17:20
+-- Létrehozás ideje: 2021. Dec 09. 11:44
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -35,21 +35,8 @@ CREATE TABLE `albums` (
   `album_artwork_path` text COLLATE utf8_hungarian_ci NOT NULL,
   `album_release_date` date NOT NULL,
   `album_distributed_by` varchar(200) COLLATE utf8_hungarian_ci NOT NULL,
-  `album_distributed_id` int(11) NOT NULL,
-  `album_tracks` text COLLATE utf8_hungarian_ci NOT NULL
+  `album_distributed_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `albums`
---
-
-INSERT INTO `albums` (`album_id`, `album_artist_name`, `album_name`, `album_artwork_path`, `album_release_date`, `album_distributed_by`, `album_distributed_id`, `album_tracks`) VALUES
-(1, 'ID', 'The First One', '/musify/images/defaultart.png', '2021-11-04', 'SZE - Musify', 1, '1,2,3'),
-(2, 'ID', 'Second One', '/musify/images/defaultart.png', '2021-11-04', 'SZE - Musify', 1, ''),
-(3, 'ID', 'Third One', '/musify/images/defaultart.png', '2021-10-05', 'Sony', 2, ''),
-(4, 'ME', 'Fourth One', '/musify/images/defaultart.png', '2020-08-11', 'Sony', 2, ''),
-(5, 'DJ Béla', 'Fifth one', '/musify/images/defaultart.png', '2021-11-01', 'SZE - Musify', 1, ''),
-(6, 'ID', 'Sixth One', '/musify/images/defaultart.png', '2021-06-07', 'Sony', 2, '');
 
 -- --------------------------------------------------------
 
@@ -62,13 +49,6 @@ CREATE TABLE `distributors` (
   `distributor_name` varchar(200) COLLATE utf8_hungarian_ci NOT NULL,
   `distributor_publish_status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `distributors`
---
-
-INSERT INTO `distributors` (`distributor_id`, `distributor_name`, `distributor_publish_status`) VALUES
-(1, 'SZE - Musify', 1);
 
 -- --------------------------------------------------------
 
@@ -89,15 +69,6 @@ CREATE TABLE `music` (
   `music_distributed_id` int(11) NOT NULL DEFAULT 1 COMMENT 'disztributor ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `music`
---
-
-INSERT INTO `music` (`music_id`, `music_artist_name`, `music_track_name`, `music_path`, `music_artwork_path`, `music_status`, `music_updated`, `album_id`, `music_distributed_by`, `music_distributed_id`) VALUES
-(1, 'ID', 'Drift', '/musify/audio/drift.mp3', '/musify/images/defaultart.png', 1, '2021-10-25', 1, 'Gradden\'s Production & Recordings Ltd.', 1),
-(2, 'Johnny Hallyday', 'Le Pénitencier', '/musify/audio/johnny.mp3', '/musify/images/defaultart.png', 1, '2021-10-30', 1, '\'SZE - Musify\'', 1),
-(3, 'Adrian Lux, Axwell', 'Teenage Crime (Axwell Remix)', '/musify/audio/axwell.mp3', '/musify/images/defaultart.png', 1, '2021-10-30', 1, '\'SZE - Musify\'', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -113,15 +84,9 @@ CREATE TABLE `users` (
   `user_lastname` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
   `user_subscription_status` tinyint(1) NOT NULL,
   `user_subscription_expiredate` date DEFAULT NULL,
-  `user_type` tinyint(4) NOT NULL COMMENT '0 - user, 1 - admin, 2 - disztributor'
+  `user_type` tinyint(4) NOT NULL COMMENT '0 - user, 1 - admin, 2 - disztributor',
+  `user_distributor_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `users`
---
-
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `user_email`, `user_firstname`, `user_lastname`, `user_subscription_status`, `user_subscription_expiredate`, `user_type`) VALUES
-(30, 'Teszt', '$2y$10$fYm9C.LBqHCXu0w7rh8bA.r1Ro6yVKagoFsSw1my/xWW052MXdP/.', 'tesztacc@gmail.com', 'Teszt', 'Account', 1, '2021-12-06', 0);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -155,7 +120,8 @@ ALTER TABLE `music`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `useremail` (`user_email`);
+  ADD UNIQUE KEY `useremail` (`user_email`),
+  ADD KEY `user_distributor_id` (`user_distributor_id`);
 
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
@@ -165,25 +131,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `albums`
 --
 ALTER TABLE `albums`
-  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `distributors`
 --
 ALTER TABLE `distributors`
-  MODIFY `distributor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `distributor_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `music`
 --
 ALTER TABLE `music`
-  MODIFY `music_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Zene ID', AUTO_INCREMENT=4;
+  MODIFY `music_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Zene ID';
 
 --
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Megkötések a kiírt táblákhoz
